@@ -1,0 +1,15 @@
+# Local secrets, data and environments
+.env
+.env.*
+!.env.example
+.venv/
+data/
+*.db
+*.sqlite
+*.sqlite3
+# Python caches and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/

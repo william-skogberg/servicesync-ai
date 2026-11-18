@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>ServiceSync AI | Operations dashboard</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="/" aria-label="ServiceSync AI dashboard">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="brand-copy"><strong>ServiceSync</strong><small>AI operations</small></span>
+        </a>
+        <div class="nav-label">WORKSPACE</div>
+        <nav class="nav-items" aria-label="Sections">
+          <a class="nav-link active" href="/" aria-current="page"><span class="nav-symbol" aria-hidden="true">◈</span> Overview</a>
+          <a class="nav-link" href="/docs" target="_blank" rel="noopener noreferrer"><span class="nav-symbol" aria-hidden="true">⌘</span> API documentation <span class="external" aria-hidden="true">↗</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="sidebar-info"><span class="pulse-dot"></span><span>Local demo environment</span></div>
+          <p>Proof of concept · Synthetic data only</p>
+          <div class="side-version">v0.2 · Dashboard</div>
+        </div>
+      </aside>
+
+      <div class="main-shell">
+        <header class="topbar">
+          <div class="crumb">Workspace <span>/</span> <strong>Overview</strong></div>
+          <div class="topbar-right">
+            <span class="connection-status" id="api-indicator"><span class="status-dot" aria-hidden="true"></span> Connecting…</span>
+            <button class="icon-button" id="refresh-button" type="button" title="Refresh data" aria-label="Refresh dashboard">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.9-4M4 4v4h4M4 13a8 8 0 0 0 14.9 4M20 20v-4h-4"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="page-heading">
+            <div><p class="eyebrow">OPERATIONS / CUSTOMER INQUIRIES</p><h1>Service overview<span class="heading-dot">.</span></h1><p class="page-subtitle">Turn customer messages into structured, actionable information.</p></div>
+            <button class="button button-primary" id="new-inquiry-button" type="button"><span aria-hidden="true">＋</span> New inquiry</button>
+          </section>
+
+          <section class="stats-grid" aria-label="Key performance indicators">
+            <article class="stat-card"><div class="stat-top"><span>Total inquiries</span><span class="stat-icon neutral">▣</span></div><strong id="stat-total">—</strong><p>Requests received</p></article>
+            <article class="stat-card"><div class="stat-top"><span>Synced to CRM</span><span class="stat-icon green">✓</span></div><strong id="stat-synced">—</strong><p>Successfully delivered</p></article>
+            <article class="stat-card"><div class="stat-top"><span>Failed deliveries</span><span class="stat-icon red">!</span></div><strong id="stat-failed">—</strong><p>Ready for retry</p></article>
+            <article class="stat-card"><div class="stat-top"><span>Needs review</span><span class="stat-icon amber">◇</span></div><strong id="stat-review">—</strong><p>AI suggestions to verify</p></article>
+          </section>
+
+          <section class="pipeline" aria-label="Integration pipeline">
+            <div class="pipeline-label"><span class="small-circle"></span> AUTOMATION FLOW</div>
+            <div class="pipeline-steps">
+              <div><span class="step-bubble">01</span><span>Inquiry received</span></div><span class="pipeline-arrow" aria-hidden="true">→</span>
+              <div><span class="step-bubble">02</span><span>AI classification</span></div><span class="pipeline-arrow" aria-hidden="true">→</span>
+              <div><span class="step-bubble">03</span><span>CRM synchronization</span></div><span class="pipeline-arrow" aria-hidden="true">→</span>
+              <div><span class="step-bubble">04</span><span>Human review</span></div>
+            </div>
+          </section>
+
+          <div class="workspace-grid">
+            <section class="panel inquiry-panel" aria-labelledby="inquiry-list-title">
+              <div class="panel-heading">
+                <div><h2 id="inquiry-list-title">Recent inquiries</h2><p>Select an inquiry to inspect the AI analysis</p></div>
+                <button class="button button-secondary button-small" id="retry-all-button" type="button">↻ Retry failed</button>
+              </div>
+              <div class="panel-tools">
+                <label class="search-field"><span aria-hidden="true">⌕</span><span class="sr-only">Search inquiries</span><input id="search-input" type="search" placeholder="Search name, message, service…" autocomplete="off" /></label>
+                <label class="filter-field"><span class="sr-only">Filter by status</span><select id="status-filter"><option value="all">All statuses</option><option value="synced">Synced</option><option value="failed">Failed</option><option value="attention">Needs review</option></select></label>
+              </div>
+              <div class="table-scroll">
+                <table class="inquiries-table"><thead><tr><th scope="col">CUSTOMER</th><th scope="col">SERVICE</th><th scope="col">DELIVERY</th><th scope="col"><span class="sr-only">Review</span></th></tr></thead><tbody id="inquiries-body"><tr><td colspan="4" class="table-empty">Loading inquiries…</td></tr></tbody></table>
+              </div>
+              <div class="panel-footer"><span id="results-count">—</span><span>Click a row for details</span></div>
+            </section>
+
+            <section class="panel detail-panel" aria-labelledby="detail-title">
+              <div class="panel-heading detail-heading"><div><h2 id="detail-title">Inquiry details</h2><p id="detail-subtitle">Inspect AI enrichment and delivery</p></div><span class="detail-decoration" aria-hidden="true">↗</span></div>
+              <div id="detail-content" class="detail-content"><div class="empty-details"><div class="empty-symbol">◇</div><strong>No inquiry selected</strong><p>Create a request or choose one from the list.</p></div></div>
+            </section>
+          </div>
+          <footer class="app-footer"><span>ServiceSync AI · Local portfolio demonstration</span><span>No real customer data · AI suggestions require human review</span></footer>
+        </main>
+      </div>
+    </div>
+
+    <dialog id="new-inquiry-dialog" class="inquiry-dialog" aria-labelledby="new-inquiry-title">
+      <form id="new-inquiry-form">
+        <div class="dialog-head"><div><p class="eyebrow">NEW REQUEST</p><h2 id="new-inquiry-title">Create inquiry</h2><p>Submit a synthetic request for AI analysis and CRM delivery.</p></div><button type="button" class="dialog-close" id="close-dialog-button" aria-label="Close dialog">×</button></div>
+        <div class="dialog-fields">
+          <label class="field"><span>Customer name</span><input name="customer_name" required minlength="2" maxlength="80" placeholder="Example: Anna Svensson" autocomplete="off" /></label>
+          <div class="two-fields">
+            <label class="field"><span>Service selected in form</span><select name="service_type" required><option value="home_cleaning">Home cleaning</option><option value="deep_cleaning">Deep cleaning</option><option value="window_cleaning">Window cleaning</option><option value="move_out_cleaning">Move-out cleaning</option></select></label>
+            <label class="field"><span>Postal code</span><input name="postal_code" inputmode="numeric" pattern="[0-9]{5}" minlength="5" maxlength="5" placeholder="00100" required autocomplete="off" /></label>
+          </div>
+          <label class="field"><span>Customer message</span><textarea name="message" required minlength="10" maxlength="1500" rows="5" placeholder="I need move-out cleaning next Friday for my 85 m2 apartment…"></textarea></label>
+          <div class="privacy-note"><span aria-hidden="true">ⓘ</span> Use fictional names and details only. In OpenAI mode, the message is sent to the model API.</div>
+        </div>
+        <div class="dialog-actions"><button type="button" class="button button-secondary" id="cancel-dialog-button">Cancel</button><button type="submit" class="button button-primary" id="submit-inquiry-button">Analyze & sync <span aria-hidden="true">→</span></button></div>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
